@@ -1,0 +1,17 @@
+{
+  "name": "devcamper",
+  "version": "1.0.0",
+  "description": "Devcamper backed API",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server",
+    "dev": "nodemon server"
+  },
+  "author": "Majd Aldein Alhourani",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-generator": "^4.16.1"
+  }
+}
