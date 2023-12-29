@@ -14,7 +14,7 @@ const getBootcamps = async (req, res, next) => {
       data: bootcamps,
     });
   } catch (error) {
-    return res.status(404).json({ success: false });
+    next(error);
   }
 };
 
@@ -39,10 +39,7 @@ const getBootcamp = async (req, res, next) => {
       );
     }
   } catch (error) {
-    // return res.status(400).json({ success: false });
-    next(
-      new ErrorResponse(`Bootcamp not found with id of  ${req.params.id}`, 404),
-    );
+    next(error);
   }
 };
 
@@ -58,7 +55,7 @@ const createBootcamp = async (req, res, next) => {
       data: bootcamp,
     });
   } catch (error) {
-    return res.status(400).json({ success: false });
+    next(error);
   }
 };
 
@@ -70,15 +67,20 @@ const deleteBootcamp = async (req, res, next) => {
     const bootcamp = await Bootcamp.findByIdAndDelete(req.params.id);
 
     if (!bootcamp) {
-      return res.status(400).json({ success: false });
+      return next(
+        new ErrorResponse(
+          `Bootcamp not found with id of  ${req.params.id}`,
+          404,
+        ),
+      );
     }
 
     res.status(200).json({
       success: true,
       data: null,
     });
-  } catch {
-    return res.status(400).json({ success: false });
+  } catch (error) {
+    next(error);
   }
 };
 
@@ -93,7 +95,12 @@ const updateBootcamp = async (req, res, next) => {
     });
 
     if (!bootcamp) {
-      return res.status(400).json({ success: false });
+      return next(
+        new ErrorResponse(
+          `Bootcamp not found with id of  ${req.params.id}`,
+          404,
+        ),
+      );
     }
 
     res.status(200).json({
@@ -101,7 +108,7 @@ const updateBootcamp = async (req, res, next) => {
       data: bootcamp,
     });
   } catch (error) {
-    res.status(400).json({ success: false });
+    next(error);
   }
 };
 
