@@ -9,6 +9,7 @@ const { param } = require('../routes/bootcamps');
 
 const getBootcamps = asyncHandler(async (req, res, next) => {
   let query;
+
   // Copy req.query
   const reqQuery = { ...req.query };
 
