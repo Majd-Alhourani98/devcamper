@@ -1,116 +1,87 @@
 const ErrorResponse = require('./../utils/errorResponse');
+const asyncHandler = require('./../middleware/async');
 const Bootcamp = require('../models/Bootcamp');
 // @desc      Get all bootcamps
 // @route     GET /api/v1/bootcamps
 // @access    Public
 
-const getBootcamps = async (req, res, next) => {
-  try {
-    const bootcamps = await Bootcamp.find();
+const getBootcamps = asyncHandler(async (req, res, next) => {
+  const bootcamps = await Bootcamp.find();
 
-    return res.status(200).json({
-      success: true,
-      length: bootcamps.length,
-      data: bootcamps,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
+  return res.status(200).json({
+    success: true,
+    length: bootcamps.length,
+    data: bootcamps,
+  });
+});
 
 // @desc      Get Single  bootcamp
 // @route     GET /api/v1/bootcamps
 // @access    Public
-const getBootcamp = async (req, res, next) => {
-  try {
-    const bootcamp = await Bootcamp.findById(req.params.id);
+const getBootcamp = asyncHandler(async (req, res, next) => {
+  const bootcamp = await Bootcamp.findById(req.params.id);
+  return res.status(200).json({
+    success: true,
+    data: bootcamp,
+  });
 
-    return res.status(200).json({
-      success: true,
-      data: bootcamp,
-    });
-
-    if (!bootcamp) {
-      return next(
-        new ErrorResponse(
-          `Bootcamp not found with id of  ${req.params.id}`,
-          404,
-        ),
-      );
-    }
-  } catch (error) {
-    next(error);
+  if (!bootcamp) {
+    return next(
+      new ErrorResponse(`Bootcamp not found with id of  ${req.params.id}`, 404),
+    );
   }
-};
+});
 
 // @desc      Create new bootcamp
 // @route     POST /api/v1/bootcamps
 // @access    Private
-const createBootcamp = async (req, res, next) => {
-  try {
-    const bootcamp = await Bootcamp.create(req.body);
+const createBootcamp = asyncHandler(async (req, res, next) => {
+  const bootcamp = await Bootcamp.create(req.body);
 
-    return res.status(201).json({
-      success: true,
-      data: bootcamp,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
+  return res.status(201).json({
+    success: true,
+    data: bootcamp,
+  });
+});
 
 // @desc      Delete new bootcamp
 // @route     DELETE /api/v1/bootcamps:id
 // @access    Private
-const deleteBootcamp = async (req, res, next) => {
-  try {
-    const bootcamp = await Bootcamp.findByIdAndDelete(req.params.id);
+const deleteBootcamp = asyncHandler(async (req, res, next) => {
+  const bootcamp = await Bootcamp.findByIdAndDelete(req.params.id);
 
-    if (!bootcamp) {
-      return next(
-        new ErrorResponse(
-          `Bootcamp not found with id of  ${req.params.id}`,
-          404,
-        ),
-      );
-    }
-
-    res.status(200).json({
-      success: true,
-      data: null,
-    });
-  } catch (error) {
-    next(error);
+  if (!bootcamp) {
+    return next(
+      new ErrorResponse(`Bootcamp not found with id of  ${req.params.id}`, 404),
+    );
   }
-};
+
+  res.status(200).json({
+    success: true,
+    data: null,
+  });
+});
 
 // @desc      Update new bootcamp
 // @route     PUT /api/v1/bootcamps:id
 // @access    Private
-const updateBootcamp = async (req, res, next) => {
-  try {
-    const bootcamp = await Bootcamp.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    });
+const updateBootcamp = asyncHandler(async (req, res, next) => {
+  const bootcamp = await Bootcamp.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
 
-    if (!bootcamp) {
-      return next(
-        new ErrorResponse(
-          `Bootcamp not found with id of  ${req.params.id}`,
-          404,
-        ),
-      );
-    }
-
-    res.status(200).json({
-      success: true,
-      data: bootcamp,
-    });
-  } catch (error) {
-    next(error);
+  if (!bootcamp) {
+    return next(
+      new ErrorResponse(`Bootcamp not found with id of  ${req.params.id}`, 404),
+    );
   }
-};
+
+  res.status(200).json({
+    success: true,
+    data: bootcamp,
+  });
+});
 
 module.exports = {
   getBootcamps,
