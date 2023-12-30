@@ -89,12 +89,14 @@ const updateBootcamp = asyncHandler(async (req, res, next) => {
 // @access    Private
 const getBootcampsInRadius = asyncHandler(async (req, res, next) => {
   const { zipCode, distance } = req.params;
+  console.log(zipCode);
+  console.log(distance);
 
   // get lat/lng from geocoder
   const loc = await geocoder.geocode(zipCode);
   const lat = loc[0].latitude;
   const lng = loc[0].longitude;
-
+  console.log('=========================');
   // calculate the radius using radians
   // divide distance by radius of Earth
   // Earth Radius = 3,963 mi / 6,378 km
